@@ -1,0 +1,34 @@
+Sync agent changes to swift (src/main/java):
+---------------------------------------------
+master -> feature/swift2026
+
+feature/swift2026 ==> hold swift changes
+master ==> regular agent changes (till recent prod release)
+
+after every prod release:
+1) In local, clone (or) checkout to feature/swift2026
+2) git pull origin master
+
+* This will fetch latest prod release changes in master and merge into feature/swift2026
+* We might get merge conflicts - 
+	- if the conflict is due to changes in same file, but different methods/lines, then resolve manually by keeping both the changes, merge changes and push to feature/swift2026
+	- if the swift modification logic collides with the same logic in agent changes, then invlove respectives developers/Brian/Evans, discuss and decide - case-by-case
+
+Sync junit changes to swift (src/main/test):
+---------------------------------------------
+* master do not have "test" code, so feature/swift2026 also did not have any test code
+* as we progress with swift changes for every agent, if junit is avail for that agent, it needs to be copied from feature/wip, make updates to junit code as per swift changes and check-in to feature/swift2026
+* meanwhile there will be Junit changes happening in feature/wip - it might be independent junit changes or junit updates due to any main agent code update
+
+- we cannot simply merge the "test" folder in feature/wip to feature/swift2026, since not all main agent code updates are available in master (and thereby in feature/swift2026)
+- neither we can merge the "test" in feature/swift2026 to feature/wip - pretty obvious, swift changes are not in wip
+
+Solution 1:
+- After every prod release, gather as a team and identify agent code and junits commited between previous prod release date and currrent prod release date
+- If it is independent junit change and the main agent code is avail in master, simply check-in the junit to feature/swift2026
+- If the agent code changes have a corresponding junit update, check-in that junit to feature/swift2026
+- If the junit file is already avail in feature/swift2026, it means there is a swift related update to the junit; both agent developer and swift developer need to work together and merge the junit changes
+
+Solution 2:
+- As swift work progresses, if the junit is avail for that agent, keep updating respective junits as per swift changes and check-in to feature/swift2026
+- When swift is ready for prod release, the agent code has to be merged into "master" and also to "wip"; at that time, all the swift related junits has to be merged into "wip"
